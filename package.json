@@ -1,0 +1,19 @@
+{
+  "name": "node-twitter",
+  "version": "1.0.0",
+  "description": "experimenting with generating list of twitter followers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Zach Krall <zach@zachkrall.com>",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.6.0",
+    "csv": "^2.0.0",
+    "dotenv": "^5.0.0",
+    "fs": "0.0.1-security",
+    "lodash": "^4.17.5",
+    "twit": "^2.2.9"
+  }
+}
