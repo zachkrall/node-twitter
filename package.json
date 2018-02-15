@@ -4,16 +4,22 @@
   "description": "experimenting with generating list of twitter followers",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
   "author": "Zach Krall <zach@zachkrall.com>",
   "license": "ISC",
   "dependencies": {
     "async": "^2.6.0",
-    "csv": "^2.0.0",
     "dotenv": "^5.0.0",
-    "fs": "0.0.1-security",
+    "express": "^4.16.2",
+    "fs": "^0.0.2",
     "lodash": "^4.17.5",
-    "twit": "^2.2.9"
+    "twit": "^2.2.9",
+    "when": "^3.7.8"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "es-collections": "0.0.2"
   }
 }
