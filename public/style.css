@@ -1,0 +1,91 @@
+*, html{
+  
+  margin:0;padding:0;
+  box-sizing:border-box;
+  
+}
+
+body{
+ 
+  font-family:'San Francisco', 'Helvetica Neue', Helvetica, sans-serif;
+  font-size:14pt;
+  
+}
+
+#app{
+
+  display:flex;
+  height:100vh;
+  flex-direction: column;
+  
+}
+
+#form{
+  
+  width:100%;
+  padding:3rem;
+  text-align:center;
+  
+  flex: 0 0 auto;
+  
+}
+
+#form form *{
+  
+  font:inherit;
+  font-size:0.85em;
+  
+}
+#form form input,
+#form form button{
+  
+  padding:6.5pt;
+  -web-kit-appearance:none;
+  
+  background:#fff;
+  color:#666;
+  
+  border-style:solid;
+  border-color:#ddd;
+  border-width:2px;
+  border-radius:5px;
+  box-shadow:2px 2px 5px rgba(0,0,0,0.2);
+  
+}
+#form form button:active{
+ 
+  background:#ddd;
+  
+}
+
+#content{
+  width:100%;
+  
+  flex: 100 0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  
+  padding:1rem 3rem;
+  
+  font-size:1.2em;
+  line-height:1.8;
+}
+
+#linkToTweet{
+  padding:3rem;
+  text-align:center;
+  font-size:0.85em;
+}
+
+#linkToTweet a{
+  
+  text-decoration:none;
+  
+}
+#linkToTweet a:after{
+  
+  content:' →';
+  
+}
