@@ -25,20 +25,39 @@ app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
 
-app.get("/following/:username", function (request, response) {
+app.get("/mediafrom/:username", function (request, response) {
 
-   let followingId = [];
-   T.get('statuses/user_timeline', { screen_name: request.params.username, count: 1 }, function (err, data, response) {
+   let mediaResults = [];
+   T.get('statuses/user_timeline', { screen_name: request.params.username, count: 75 }, function (err, data, response) {
 
 		data.map(
-			function(item){
-				followingId.push(item);
+			function(tweet){
+        
+        if (tweet.entities.media) {
+          
+          tweet.entities.media.map(
+            function(item){
+              mediaResults.push(item.media_url_https);
+            }
+          );
+          
+        }
+        
 			}
 		);
 
 	}).then(function(){
-	
-		response.send(followingId);
+     
+    if (mediaResults.length == 0){
+    
+      response.send('error');
+      
+    } else {
+
+      // put newest images last so they appear closer to the front
+		  response.send(mediaResults.reverse());
+
+    }
 		
 	});
 	
