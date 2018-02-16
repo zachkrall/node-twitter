@@ -10,6 +10,10 @@ body{
   font-family:'San Francisco', 'Helvetica Neue', Helvetica, sans-serif;
   font-size:14pt;
   
+  height:100vh;width:100vw;
+  
+  background: rgba(51,51,51,1.0);
+
 }
 
 #app{
@@ -28,6 +32,7 @@ body{
   
   flex: 0 0 auto;
   
+  z-index:999;
 }
 
 #form form *{
@@ -40,7 +45,7 @@ body{
 #form form button{
   
   padding:6.5pt;
-  -web-kit-appearance:none;
+  -webkit-appearance:none;
   
   background:#fff;
   color:#666;
@@ -50,6 +55,8 @@ body{
   border-width:2px;
   border-radius:5px;
   box-shadow:2px 2px 5px rgba(0,0,0,0.2);
+  
+  text-transform:lowercase;
   
 }
 #form form button:active{
@@ -63,6 +70,8 @@ body{
   
   flex: 100 0 auto;
   display:flex;
+  flex-wrap:wrap;
+  
   align-items:center;
   justify-content:center;
   text-align:center;
@@ -71,6 +80,20 @@ body{
   
   font-size:1.2em;
   line-height:1.8;
+}
+#content img{
+  
+  width:300px;
+  background:#fff;
+  
+  margin:3rem;
+  
+  border-style:solid;
+  border-color:#ddd;
+  border-width:2px;
+  border-radius:5px;
+  box-shadow:2px 2px 5px rgba(0,0,0,0.2);
+  
 }
 
 #linkToTweet{
@@ -87,5 +110,13 @@ body{
 #linkToTweet a:after{
   
   content:' →';
+  
+}
+
+canvas{
+
+  position:fixed;
+  top:0;left:0;
+  z-index:100;
   
 }

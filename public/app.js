@@ -1,57 +1,186 @@
-$(function() {
-  console.log('hello world :o');
-  
-  $('form').submit(function(event) {
-    $('ul#content').html('');
-    event.preventDefault();
-    var username = $('input').val();
-    console.log('/following/' + username);
-    
-    $.get('/following/' + username, function(item){
-        
-        console.log(item.length);
-        item.map(function(tweet) {
+// var testData = ["https://pbs.twimg.com/media/DWHAIDDXkAEeQbn.jpg","https://pbs.twimg.com/media/DWGXjT5XkAAcjxw.jpg","https://pbs.twimg.com/media/DWGQpqcXcAAgSTy.png","https://pbs.twimg.com/media/DWDQuL1XcAEAUOG.jpg","https://pbs.twimg.com/media/DWACttvXkAENcH6.jpg","https://pbs.twimg.com/media/DWAB6o8UMAIYElL.jpg","https://pbs.twimg.com/media/DV2zt88VQAE-M7H.jpg","https://pbs.twimg.com/media/DV7i5_iXUAA99sj.jpg","https://pbs.twimg.com/ext_tw_video_thumb/963450626771423232/pu/img/V1WOoj7ksIalS4An.jpg","https://pbs.twimg.com/media/DV39dRlUQAALoEp.jpg","https://pbs.twimg.com/ext_tw_video_thumb/963156874563432449/pu/img/LVOnTmj0VrgFlKox.jpg","https://pbs.twimg.com/media/DV3ZgAEWsAA2z9j.jpg","https://pbs.twimg.com/media/DV2KN-vX4AALRJ3.jpg","https://pbs.twimg.com/tweet_video_thumb/DVzhBusU0AANWxn.jpg","https://pbs.twimg.com/media/DVpKNFPX0AET63h.jpg"];
+// var testData = ["https://pbs.twimg.com/media/DWHAIDDXkAEeQbn.jpg"];
+var data = [];
+var myFloatingImages = [];
+var bgcolor = 51;
+
+var colorH = 0;
+var colorS = 100;
+var colorB = 100;
+
+var showDrawing = false;
+
+console.log(data.length);
+
+
+class floatingImage{
+
+constructor(thisImage, x, y) {
+  this.thisImage = thisImage;
+  this.x = x;
+  this.y = y;
+
+  this.xspeed = random(5,20) * 0.3;
+  this.xdirection = 1;
+
+  this.yspeed = random(5,20) * 0.3;
+  this.ydirection = 1;
+}
+
+display(){
+
+  image(this.thisImage, this.x, this.y, this.thisImage.width/3, this.thisImage.height/3);
+
+}
+
+move(){
+
+  this.x = this.x + (this.xspeed * this.xdirection);
+  this.y = this.y + (this.yspeed * this.ydirection);
+
+}
+
+}
+
+      // START p5.js
+
+    function setup() {
+       
+      createCanvas(windowWidth, windowHeight);
+      
+        data.map(function(thisImage){
+              
+          var thisImage = loadImage(thisImage);
           
-//             // BLOTTER - Example 2
-//             var text = new Blotter.Text(tweet.text, {
-//               family : "'EB Garamond', serif",
-//               size : 48,
-//               fill : "#171717",
-//               paddingLeft : 0,
-//               paddingRight : 0
-//             });
-
-//             var material = new Blotter.LiquidDistortMaterial();
-
-//             // Play with the value for uSpeed. Lower values slow
-//             // down animation, while higher values speed it up. At
-//             // a speed of 0.0, animation is stopped entirely.
-//             material.uniforms.uSpeed.value = 0.25;
-
-//             // Try uncommenting the following line to play with
-//             // the "volatility" of the effect. Higher values here will
-//             // produce more dramatic changes in the appearance of your
-//             // text as it animates, but you will likely want to keep
-//             // the value below 1.0.
-//             //material.uniforms.uVolatility.value = 0.30;
-
-//             var blotter = new Blotter(material, {
-//               texts : text
-//             });
-
-//             var elem = document.getElementById("content");
-//             var scope = blotter.forText(text);
-
-//             scope.appendTo(elem);
+          var halfWidth = thisImage.width/2;
+          var halfHeight = thisImage.height/2;
           
+          var maxWidth = windowWidth-halfWidth;
+          var maxHeight = windowHeight-halfHeight;
           
-          $('#content').html(tweet.text);
-          $('#linkToTweet').html('<a href="https://twitter.com/' + tweet.user.screen_name + '/status/' + tweet.id_str + '">link to tweet</a>');
+          var buffer = 10;
+          
+          // var x = random(halfWidth+10, maxWidth-10);
+          // var y = random(halfHeight+10, maxHeight-10);
+          
+          var x = windowWidth/2;
+          var y = windowHeight/2;
+          
+          var thisImage = new floatingImage(thisImage, x, y); 
+          
+          myFloatingImages.push(thisImage);
           
         });
+      
+      console.log(myFloatingImages);
+      
+      imageMode(CENTER);
+      colorMode(HSB, 100);
+      
+      showDrawing = true;
+  
+      
+    }
+
+    function draw() {
+
+        if ( data.length != 0 && showDrawing == true ){
+          background(colorH, colorS, colorB);
+          
+          
+          for(var i=0;i<myFloatingImages.length;i++){
+            
+            myFloatingImages[i].display();
+            myFloatingImages[i].move();
+
+            // Ugh
+            var maxX = windowWidth - myFloatingImages[i].thisImage.width/6;
+            var maxY = windowHeight - myFloatingImages[i].thisImage.height/6;
+
+            var minX = myFloatingImages[i].thisImage.width/6;
+            var minY = myFloatingImages[i].thisImage.height/6;
+
+
+            if (myFloatingImages[i].x > maxX || myFloatingImages[i].x < minX) {
+              
+              myFloatingImages[i].xdirection *= -1;
+
+            }
+            
+            if (myFloatingImages[i].y > maxY || myFloatingImages[i].y < minY) {
+               
+              myFloatingImages[i].ydirection *= -1;
+
+            }
+            
+          } // end of For Loop
+          
+          
+        } // end of if data.length = 0
+
+      
+        if( colorH > 100 ){
+          
+          colorH=0;
+          
+        } else if ( data.length != 0) {
+          
+          colorH+=0.1;
         
+        }
+      
+    } 
+
+
+
+$(function() {
+  
+  $('form').submit(function(event) {
+    $('#content').html('');
+    event.preventDefault();
+    
+    // STOP ALL SHENANIGANS
+    var username = $('input').val().replace(/[^a-zA-Z0-9_]+/g,'').replace(/ /g, '_');
+    
+    console.log('/mediafrom/' + username);
+    
+    $.get('/mediafrom/' + username, function(item){
+      
+       if ( item != 'error' ) {
+      
+        data = [];
+        myFloatingImages = [];
+        // Updated Input Field with 
+        $('input').val(username);
+
+        // Cycle through all of the image urls
+        item.map(function(media) {
+
+          console.log(media);
+          // $('<img src="' + media + '" >').appendTo('#content');
+          //$('#linkToTweet').html('<a href="https://twitter.com/' + tweet.user.screen_name + '/status/' + tweet.id_str + '">link to tweet</a>');
+          data.push(media);
+
+        });
+    
+      console.log(data.length);
+      setup();
+         
+       } else {
+         
+         alert('This account does not have any images to show. Try @hubble_space or @dog_rates');
+      
+       }
+    
+      
     });
     
+    
+    
   });
+
+  
+
+  
 
 });
