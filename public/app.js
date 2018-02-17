@@ -8,6 +8,8 @@ var colorH = 0;
 var colorS = 100;
 var colorB = 100;
 
+var smallWindow = 800;
+
 var showDrawing = false;
 
 console.log(data.length);
@@ -19,17 +21,35 @@ constructor(thisImage, x, y) {
   this.thisImage = thisImage;
   this.x = x;
   this.y = y;
-
-  this.xspeed = random(5,20) * 0.3;
+  
   this.xdirection = 1;
-
-  this.yspeed = random(5,20) * 0.3;
   this.ydirection = 1;
+  
+  if ( windowWidth < smallWindow ) {
+    
+    this.xspeed = random(5,15) * 0.3;
+    this.yspeed = random(5,15) * 0.3;
+    
+  } else {
+  
+    this.xspeed = random(5,30) * 0.3;
+    this.yspeed = random(5,30) * 0.3;
+    
+  }
+  
 }
 
 display(){
+  
+  if ( windowWidth < smallWindow ) {
 
-  image(this.thisImage, this.x, this.y, this.thisImage.width/3, this.thisImage.height/3);
+    image(this.thisImage, this.x, this.y, this.thisImage.width/6, this.thisImage.height/6);
+    
+  } else {
+  
+    image(this.thisImage, this.x, this.y, this.thisImage.width/3, this.thisImage.height/3);
+    
+  }
 
 }
 
@@ -47,6 +67,8 @@ move(){
     function setup() {
        
       createCanvas(windowWidth, windowHeight);
+      
+        if (showDrawing){
       
         data.map(function(thisImage){
               
@@ -71,13 +93,12 @@ move(){
           myFloatingImages.push(thisImage);
           
         });
+        }
       
       console.log(myFloatingImages);
       
       imageMode(CENTER);
       colorMode(HSB, 100);
-      
-      showDrawing = true;
   
       
     }
@@ -100,17 +121,35 @@ move(){
             var minX = myFloatingImages[i].thisImage.width/6;
             var minY = myFloatingImages[i].thisImage.height/6;
 
-
-            if (myFloatingImages[i].x > maxX || myFloatingImages[i].x < minX) {
+            if ( windowWidth < smallWindow ) {
               
-              myFloatingImages[i].xdirection *= -1;
+              if (myFloatingImages[i].x > windowWidth || myFloatingImages[i].x < 0) {
 
-            }
+                myFloatingImages[i].xdirection *= -1;
+
+              }
+
+              if (myFloatingImages[i].y > windowHeight || myFloatingImages[i].y < 0) {
+
+                myFloatingImages[i].ydirection *= -1;
+
+              }
             
-            if (myFloatingImages[i].y > maxY || myFloatingImages[i].y < minY) {
-               
-              myFloatingImages[i].ydirection *= -1;
+            
+            } else {
 
+              if (myFloatingImages[i].x > maxX || myFloatingImages[i].x < minX) {
+
+                myFloatingImages[i].xdirection *= -1;
+
+              }
+
+              if (myFloatingImages[i].y > maxY || myFloatingImages[i].y < minY) {
+
+                myFloatingImages[i].ydirection *= -1;
+
+              }
+            
             }
             
           } // end of For Loop
@@ -131,16 +170,47 @@ move(){
       
     } 
 
+    // why would a person resize their window.. because they hate me
+    function windowResized() {
+      
+      resizeCanvas(windowWidth, windowHeight);
+      for(var i=0;i<myFloatingImages.length;i++){
+       
+          // reset x and y to middle of screen to avoid crazy shaking because they are caught on the edge of monitor
+          myFloatingImages[i].x = windowWidth/2;
+          myFloatingImages[i].y = windowHeight/2;
+        
+      }
+      
+      
+    }
+
 
 
 $(function() {
+  
+  $('#start').focus();
+  
+  $('#start').click(function(){
+  
+    $('#welcome').hide();
+    $('#searchBar').focus();
+  
+  });
+  
+  $('#error_close').click(function(){
+  
+    $('#error_wrapper').hide();
+    $('#searchBar').focus();
+  
+  });
   
   $('form').submit(function(event) {
     $('#content').html('');
     event.preventDefault();
     
     // STOP ALL SHENANIGANS
-    var username = $('input').val().replace(/[^a-zA-Z0-9_]+/g,'').replace(/ /g, '_');
+    var username = $('input').val().replace(/ /g, '_').replace(/[^a-zA-Z0-9_]+/g,'');
     
     console.log('/mediafrom/' + username);
     
@@ -152,6 +222,7 @@ $(function() {
         myFloatingImages = [];
         // Updated Input Field with 
         $('input').val(username);
+        showDrawing = true;
 
         // Cycle through all of the image urls
         item.map(function(media) {
@@ -163,12 +234,14 @@ $(function() {
 
         });
     
-      console.log(data.length);
+      console.log('total of ' + data.length + 'images');
       setup();
          
        } else {
          
-         alert('This account does not have any images to show. Try @hubble_space or @dog_rates');
+         $('#error_message').html('No images from @' + username + '. Try @CoolDogPics or @archillect');
+         $('#error_wrapper').show();
+         $('#error_close').focus();
       
        }
     
