@@ -28,23 +28,26 @@ app.get("/", function (request, response) {
 app.get("/mediafrom/:username", function (request, response) {
 
    let mediaResults = [];
-   T.get('statuses/user_timeline', { screen_name: request.params.username, count: 75 }, function (err, data, response) {
+   T.get('statuses/user_timeline', { screen_name: request.params.username, count: 75 }, function (err, data, response){
+     
+    // the twitter api is so dumb
+     if( !data.errors && !data.error ) {
+      data.map(
+        function(tweet){
 
-		data.map(
-			function(tweet){
-        
-        if (tweet.entities.media) {
-          
-          tweet.entities.media.map(
-            function(item){
-              mediaResults.push(item.media_url_https);
-            }
-          );
-          
+          if (tweet.entities.media) {
+
+            tweet.entities.media.map(
+              function(item){
+                mediaResults.push(item.media_url_https);
+              }
+            );
+
+          }
+
         }
-        
-			}
-		);
+      );
+     }
 
 	}).then(function(){
      
@@ -53,10 +56,10 @@ app.get("/mediafrom/:username", function (request, response) {
       response.send('error');
       
     } else {
-
-      // put newest images last so they appear closer to the front
-		  response.send(mediaResults.reverse());
-
+      
+      // catch errors for accounts that do not exist
+      response.send(mediaResults.reverse());
+      
     }
 		
 	});

@@ -18,7 +18,7 @@
     <div id="form">
       
       <form>
-        <input placeholder="@zachkrall">
+        <input id="searchBar" placeholder="twitter username">
         <button type="submit">search</button>
       </form>
       
@@ -29,6 +29,40 @@
 
   </div>
 
+  <div id="welcome">
+    
+    <h1>
+      Chaotic Twitter Image Gallery
+    </h1>
+    
+    <p>
+      
+      Search a twitter username to fetch the most recent images from their timeline and display them in a jumbled mess.
+      
+      <img src="https://cdn.glitch.com/9c5bad48-eb83-4cf1-a3fe-7d05cbb94f71%2Fdemo.png?1518811318082">
+      
+    </p>
+    
+    <div>
+      <button id="start">
+        let's go
+      </button>
+    </div>
+    
+  </div>
+  
+  <div id="error_wrapper">
+    <div id="error_border">
+      
+      <p id="error_message">
+        This is an error!
+      </p>
+      
+      <button id="error_close">
+        okay
+      </button>
+    </div>
+  </div>
   
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.min.js"></script>
